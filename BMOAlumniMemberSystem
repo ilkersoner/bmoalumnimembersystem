@@ -1,0 +1,495 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.0
+-- Dumped by pg_dump version 12.0
+
+-- Started on 2019-11-13 23:32:08
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 204 (class 1259 OID 16398)
+-- Name: account; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.account (
+    account_id integer NOT NULL,
+    registration_date integer NOT NULL,
+    fee boolean NOT NULL,
+    email text NOT NULL,
+    password text NOT NULL,
+    CONSTRAINT account_email_check CHECK ((email ~* '^\w+@\w+[.]\w+$'::text)),
+    CONSTRAINT account_password_check CHECK ((char_length(password) >= 8))
+);
+
+
+ALTER TABLE public.account OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 16394)
+-- Name: account_account_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.account_account_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.account_account_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2883 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: account_account_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.account_account_id_seq OWNED BY public.account.account_id;
+
+
+--
+-- TOC entry 203 (class 1259 OID 16396)
+-- Name: account_registration_date_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.account_registration_date_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.account_registration_date_seq OWNER TO postgres;
+
+--
+-- TOC entry 2884 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: account_registration_date_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.account_registration_date_seq OWNED BY public.account.registration_date;
+
+
+--
+-- TOC entry 206 (class 1259 OID 16414)
+-- Name: address; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.address (
+    account_id integer NOT NULL,
+    street_name text NOT NULL,
+    street_number text NOT NULL,
+    city text NOT NULL,
+    zipcode integer
+);
+
+
+ALTER TABLE public.address OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 16412)
+-- Name: address_account_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.address_account_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.address_account_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2885 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: address_account_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.address_account_id_seq OWNED BY public.address.account_id;
+
+
+--
+-- TOC entry 209 (class 1259 OID 16429)
+-- Name: alumni; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.alumni (
+    account_id integer NOT NULL,
+    first_name text NOT NULL,
+    last_name text NOT NULL,
+    age integer NOT NULL,
+    email text NOT NULL,
+    password text NOT NULL,
+    project_number integer NOT NULL,
+    CONSTRAINT alumni_check CHECK (((first_name !~ '\s'::text) AND (last_name !~ '\s'::text))),
+    CONSTRAINT alumni_email_check CHECK ((email ~* '^\w+@\w+[.]\w+$'::text)),
+    CONSTRAINT alumni_password_check CHECK ((char_length(password) >= 8))
+);
+
+
+ALTER TABLE public.alumni OWNER TO postgres;
+
+--
+-- TOC entry 207 (class 1259 OID 16425)
+-- Name: alumni_account_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.alumni_account_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.alumni_account_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2886 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: alumni_account_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.alumni_account_id_seq OWNED BY public.alumni.account_id;
+
+
+--
+-- TOC entry 208 (class 1259 OID 16427)
+-- Name: alumni_age_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.alumni_age_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.alumni_age_seq OWNER TO postgres;
+
+--
+-- TOC entry 2887 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: alumni_age_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.alumni_age_seq OWNED BY public.alumni.age;
+
+
+--
+-- TOC entry 212 (class 1259 OID 16455)
+-- Name: alumni_project_number_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.alumni_project_number_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.alumni_project_number_seq OWNER TO postgres;
+
+--
+-- TOC entry 2888 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: alumni_project_number_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.alumni_project_number_seq OWNED BY public.alumni.project_number;
+
+
+--
+-- TOC entry 211 (class 1259 OID 16446)
+-- Name: project; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.project (
+    project_number integer NOT NULL,
+    project_name text NOT NULL
+);
+
+
+ALTER TABLE public.project OWNER TO postgres;
+
+--
+-- TOC entry 210 (class 1259 OID 16444)
+-- Name: project_project_number_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.project_project_number_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.project_project_number_seq OWNER TO postgres;
+
+--
+-- TOC entry 2889 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: project_project_number_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.project_project_number_seq OWNED BY public.project.project_number;
+
+
+--
+-- TOC entry 2715 (class 2604 OID 16401)
+-- Name: account account_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.account ALTER COLUMN account_id SET DEFAULT nextval('public.account_account_id_seq'::regclass);
+
+
+--
+-- TOC entry 2716 (class 2604 OID 16402)
+-- Name: account registration_date; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.account ALTER COLUMN registration_date SET DEFAULT nextval('public.account_registration_date_seq'::regclass);
+
+
+--
+-- TOC entry 2719 (class 2604 OID 16417)
+-- Name: address account_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.address ALTER COLUMN account_id SET DEFAULT nextval('public.address_account_id_seq'::regclass);
+
+
+--
+-- TOC entry 2720 (class 2604 OID 16432)
+-- Name: alumni account_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.alumni ALTER COLUMN account_id SET DEFAULT nextval('public.alumni_account_id_seq'::regclass);
+
+
+--
+-- TOC entry 2721 (class 2604 OID 16433)
+-- Name: alumni age; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.alumni ALTER COLUMN age SET DEFAULT nextval('public.alumni_age_seq'::regclass);
+
+
+--
+-- TOC entry 2722 (class 2604 OID 16457)
+-- Name: alumni project_number; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.alumni ALTER COLUMN project_number SET DEFAULT nextval('public.alumni_project_number_seq'::regclass);
+
+
+--
+-- TOC entry 2726 (class 2604 OID 16449)
+-- Name: project project_number; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.project ALTER COLUMN project_number SET DEFAULT nextval('public.project_project_number_seq'::regclass);
+
+
+--
+-- TOC entry 2869 (class 0 OID 16398)
+-- Dependencies: 204
+-- Data for Name: account; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.account (account_id, registration_date, fee, email, password) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2871 (class 0 OID 16414)
+-- Dependencies: 206
+-- Data for Name: address; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.address (account_id, street_name, street_number, city, zipcode) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2874 (class 0 OID 16429)
+-- Dependencies: 209
+-- Data for Name: alumni; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.alumni (account_id, first_name, last_name, age, email, password, project_number) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2876 (class 0 OID 16446)
+-- Dependencies: 211
+-- Data for Name: project; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.project (project_number, project_name) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2890 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: account_account_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.account_account_id_seq', 1, false);
+
+
+--
+-- TOC entry 2891 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: account_registration_date_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.account_registration_date_seq', 1, false);
+
+
+--
+-- TOC entry 2892 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: address_account_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.address_account_id_seq', 1, false);
+
+
+--
+-- TOC entry 2893 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: alumni_account_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.alumni_account_id_seq', 1, false);
+
+
+--
+-- TOC entry 2894 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: alumni_age_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.alumni_age_seq', 1, false);
+
+
+--
+-- TOC entry 2895 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: alumni_project_number_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.alumni_project_number_seq', 1, false);
+
+
+--
+-- TOC entry 2896 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: project_project_number_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.project_project_number_seq', 1, false);
+
+
+--
+-- TOC entry 2728 (class 2606 OID 16411)
+-- Name: account account_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.account
+    ADD CONSTRAINT account_email_key UNIQUE (email);
+
+
+--
+-- TOC entry 2730 (class 2606 OID 16409)
+-- Name: account account_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.account
+    ADD CONSTRAINT account_pkey PRIMARY KEY (account_id);
+
+
+--
+-- TOC entry 2732 (class 2606 OID 16424)
+-- Name: address address_city_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.address
+    ADD CONSTRAINT address_city_key UNIQUE (city);
+
+
+--
+-- TOC entry 2734 (class 2606 OID 16422)
+-- Name: address address_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.address
+    ADD CONSTRAINT address_pkey PRIMARY KEY (account_id);
+
+
+--
+-- TOC entry 2736 (class 2606 OID 16443)
+-- Name: alumni alumni_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.alumni
+    ADD CONSTRAINT alumni_email_key UNIQUE (email);
+
+
+--
+-- TOC entry 2738 (class 2606 OID 16441)
+-- Name: alumni alumni_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.alumni
+    ADD CONSTRAINT alumni_pkey PRIMARY KEY (account_id);
+
+
+--
+-- TOC entry 2740 (class 2606 OID 16454)
+-- Name: project project_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.project
+    ADD CONSTRAINT project_pkey PRIMARY KEY (project_number);
+
+
+-- Completed on 2019-11-13 23:32:09
+
+--
+-- PostgreSQL database dump complete
+--
+
